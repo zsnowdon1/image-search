@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
-import photoRoutes from './api/routes/photo.routes.js'
+import photoRoutes from './src/routes/photo.routes.js'
 
 const app = express();
 
