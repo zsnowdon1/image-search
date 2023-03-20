@@ -3,3 +3,4 @@ dev.env
 node_modules
 api/node_modules/
 db/data/
+package.json
