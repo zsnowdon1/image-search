@@ -8,3 +8,18 @@ services:
             - 3306:3306
         env_file:
             dev.env
+        volumes:
+            - db:/var/lib/mariadb
+    
+    api:
+        depends_on:
+            - mariadb
+        build: ./api
+        restart: unless-stopped
+        env_file:
+            dev.env
+        ports:
+            - "80:8080"
+
+volumes:
+    db:

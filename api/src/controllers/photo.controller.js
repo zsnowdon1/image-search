@@ -1,14 +1,12 @@
-const getPhotos = async (req, res) => {
+export const getPhotos = async (req, res) => {
     try {
-        const postMessages = await PostMessage.find();
-        console.log(postMessages);
-        res.status(200).json(postMessages);
+        res.status(200).json("postMessages");
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
 }
 
-const uploadPhoto = async (req, res) => {
+export const uploadPhoto = async (req, res) => {
     const post = req.body;
 
     const newPost = new PostMessage(post);
@@ -20,8 +18,3 @@ const uploadPhoto = async (req, res) => {
         res.status(409).json({ message: error.message });
     }
 };
-
-module.exports = {
-    getPhotos,
-    uploadPhoto
-}

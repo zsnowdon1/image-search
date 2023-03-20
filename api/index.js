@@ -1,18 +1,18 @@
 import express from 'express';
+import mariadb from 'mariadb';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import photoRoutes from './src/routes/photo.routes.js'
 
 const app = express();
-var mysql = require('mysql');
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'zsnowdon',
-    password: 'password',
-    database: 'image_search_database'
-})
+// const db = mariadb.createConnection({
+//     host: 'localhost',
+//     user: 'user',
+//     password: 'password',
+//     database: 'image_search_database'
+// })
 
 app.use(bodyParser.json({ limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true}));
@@ -20,9 +20,8 @@ app.use(cors());
 
 app.use('/photo', photoRoutes);
 
-const CONNECTION_URL = 'mongodb+srv://zsnowdon:zsnowdon123@cluster0.a5l9bec.mongodb.net/?retryWrites=true&w=majority';
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
-mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(PORT, () => console.log(`Server running on port: ${PORT}`)))
-    .catch((error) => console.log(error.message));
+app.listen(PORT, () => {
+    console.log(`EXAMPLE APP running on port ${PORT}`)
+})
