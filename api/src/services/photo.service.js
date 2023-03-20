@@ -1,5 +1,6 @@
+import db from 'index.js';
 const addPhoto = async (userName) => {
-    const client = new Client(getConnection())
+    db.connect;
     await client.connect()
 
     await client.query(`INSERT INTO users (userName) VALUES ('${userName}');`)

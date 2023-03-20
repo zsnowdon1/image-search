@@ -1,0 +1,10 @@
+version: "1.0"
+
+services:
+    mariadb:
+        image: mariadb:10.6
+        restart: unless-stopped
+        ports:
+            - 3306:3306
+        env_file:
+            dev.env
