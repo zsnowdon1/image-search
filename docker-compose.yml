@@ -3,13 +3,14 @@ version: "1.0"
 services:
     mariadb:
         image: mariadb:10.6
-        restart: unless-stopped
+        restart: always
         ports:
             - 3306:3306
         env_file:
-            dev.env
+            - dev.env
         volumes:
-            - db:/var/lib/mariadb
+            - "./db/data:/var/lib/mysql"
+            - "./db/db_schema:/docker-entrypoint-initdb.d"
     
     api:
         depends_on:
@@ -20,6 +21,5 @@ services:
             dev.env
         ports:
             - "8080:8080"
-
 volumes:
     db:
