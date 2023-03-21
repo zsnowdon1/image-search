@@ -3,6 +3,7 @@ dev.env
 node_modules
 api/node_modules/
 db/data/
+api/package.json
 package.json
 secrets/
 rising-apricot-380619-075a8b342646.json
