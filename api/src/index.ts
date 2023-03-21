@@ -3,7 +3,8 @@ import mariadb from 'mariadb';
 import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import { fileURLToPath } from 'url';
-// import bodyParser from 'body-parser';
+import upload from 'express-fileupload';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import photoRoutes from './routes/photo-routes.js'
@@ -26,16 +27,13 @@ const googleCloud = new Storage({
 
 export const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
-// app.use(bodyParser.json({ limit: "30mb", extended: true}));
-// app.use(bodyParser.urlencoded({ limit: "30mb", extended: true}));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 app.use(cors());
 
 app.use('/photo', photoRoutes);
 
 const PORT = process.env.PORT || 8080;
-
-// app.listen(PORT, () => {
-//     console.log(`EXAMPLE APP running on port ${PORT}`)
-// })
 
 app.listen(PORT);
