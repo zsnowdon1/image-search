@@ -1,7 +1,7 @@
-export const uploadPhoto = async (req, res) => {
-    console.log(req.body);
+export const uploadPhoto = (req, res) => {
+    console.log(req.photo);
     try {
-        //await addPhoto(photo);
+        // await addPhoto(req.body);
         res.status(201).json(req);
     }
     catch (error) {

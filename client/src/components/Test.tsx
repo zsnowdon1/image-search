@@ -16,7 +16,7 @@ function Test() {
 
     return (
         <div>
-            <input type="file" name="file" onChange={handleAddFile}/>
+            <input type="file" accept="image/*" onChange={handleAddFile}/>
             <button onClick={handleSubmit}>Add Photo</button>
         </div>
     );

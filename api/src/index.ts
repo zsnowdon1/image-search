@@ -3,9 +3,9 @@ import mariadb from 'mariadb';
 import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import upload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import multer from 'multer';
 
 import photoRoutes from './routes/photo-routes.js'
 
@@ -27,9 +27,19 @@ const googleCloud = new Storage({
 
 export const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'Images')
+    },
+    filename: (req, file, cb) => {
+        console.log(file);
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+export const upload = multer({storage: storage});
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/photo', photoRoutes);

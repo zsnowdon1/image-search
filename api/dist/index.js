@@ -19,9 +19,8 @@ const googleCloud = new Storage({
     projectId: 'rising-apricot-380619'
 });
 export const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
 app.use('/photo', photoRoutes);
 const PORT = process.env.PORT || 8080;

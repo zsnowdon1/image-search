@@ -1,8 +1,7 @@
 import { addPhoto } from "../services/photo-service.js";
 
 export const uploadPhoto = (req, res) => {
-    const body = JSON.parse(JSON.stringify(req.body))
-    console.log(body);
+    console.log(req.file.name);
     
     try {
         // await addPhoto(req.body);
