@@ -1,5 +1,7 @@
-import { photoBucket } from "../index.js"
+import { addImageToCloud } from "../dao/google-cloud-dao.js";
 
 export const addPhoto = async (file) => {
-    console.log(file);
+    const fileUrl = await addImageToCloud(file);
+    console.log(fileUrl);
+    return fileUrl;
 }
