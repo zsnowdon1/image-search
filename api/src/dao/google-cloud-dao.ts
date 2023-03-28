@@ -1,4 +1,5 @@
 import { Storage } from '@google-cloud/storage';
+import vision from '@google-cloud/vision';
 import path from 'path';
 import { format } from 'util';
 import { fileURLToPath } from 'url';
@@ -14,7 +15,6 @@ const googleCloud = new Storage({
 const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
 export const addImageToCloud = (file) => new Promise((resolve, reject) => {
-    console.log(file);
     const { originalname, buffer } = file;
   
     const blob = photoBucket.file(originalname.replace(/ /g, "_"));
@@ -26,14 +26,28 @@ export const addImageToCloud = (file) => new Promise((resolve, reject) => {
         console.log(err);
     });
 
-    blobStream.on('finish', () => {
+    blobStream.on('finish', async () => {
         const publicUrl = format(
             `https://storage.googleapis.com/${photoBucket.name}/${blob.name}`
         );
-        resolve(publicUrl);
+        resolve({
+            bucketUrl: publicUrl,
+            fileName: blob.name
+        });
     })
     .on('error', () => {
         reject(`Unable to upload image, something went wrong`);
     })
     .end(buffer);
 });
+
+export const getImageProperties = async (fileName) => {
+    const blob = photoBucket.file(fileName.replace(/ /g, "_"));
+    const client = new vision.ImageAnnotatorClient({
+        keyFilename: path.join(__dirname, '../../secrets/rising-apricot-380619-075a8b342646.json')
+    });
+    const [result] =  await client.labelDetection(
+        `gs://${photoBucket.name}/${blob.name}`
+    );
+    return result.labelAnnotations;
+}

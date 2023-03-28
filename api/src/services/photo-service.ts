@@ -1,7 +1,7 @@
-import { addImageToCloud } from "../dao/google-cloud-dao.js";
+import { addImageToCloud, getImageProperties } from "../dao/google-cloud-dao.js";
 
 export const addPhoto = async (file) => {
-    const fileUrl = await addImageToCloud(file);
-    console.log(fileUrl);
-    return fileUrl;
+    const cloudFile = await addImageToCloud(file);
+    const properties = await getImageProperties(file.originalname);
+    return properties;
 }
