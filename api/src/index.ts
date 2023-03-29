@@ -7,13 +7,6 @@ import photoRoutes from './routes/photo-routes.js'
 
 const app = express();
 
-// export const dbPool = mariadb.createConnection({
-//     host: 'localhost',
-//     user: 'user',
-//     password: 'password',
-//     database: 'image_search_database'
-// });
-
 export const dbPool = mariadb.createPool({
     host: 'mariadb',
     port: 3306, 
