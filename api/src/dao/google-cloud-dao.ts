@@ -3,6 +3,7 @@ import vision from '@google-cloud/vision';
 import path from 'path';
 import { format } from 'util';
 import { fileURLToPath } from 'url';
+import { Photo } from '../models/photo-dto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +15,7 @@ const googleCloud = new Storage({
 
 const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
-export const addImageToCloud = (file) => new Promise((resolve, reject) => {
+export const addImageToCloud = (file) => new Promise<String | String>((resolve, reject) => {
     const { originalname, buffer } = file;
   
     const blob = photoBucket.file(originalname.replace(/ /g, "_"));
@@ -27,13 +28,10 @@ export const addImageToCloud = (file) => new Promise((resolve, reject) => {
     });
 
     blobStream.on('finish', async () => {
-        const publicUrl = format(
+        const publicUrl: String = format(
             `https://storage.googleapis.com/${photoBucket.name}/${blob.name}`
         );
-        resolve({
-            bucketUrl: publicUrl,
-            fileName: blob.name
-        });
+        resolve(publicUrl);
     })
     .on('error', () => {
         reject(`Unable to upload image, something went wrong`);
