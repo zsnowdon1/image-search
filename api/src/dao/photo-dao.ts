@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dbPool } from '../index.js';
-import { Photo } from '../models/photo-dto.js';
+import { Photo } from '../models/models.js';
 
 const photoInsertQuery = `INSERT INTO image_data.photo (bucket_url, filename, upload_time) VALUES (?, ?, ?)`;
 const photoUserInsertQuery = `INSERT INTO image_data.photo_user VALUES (?, ?)`;

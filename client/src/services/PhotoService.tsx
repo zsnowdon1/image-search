@@ -7,7 +7,7 @@ export async function uploadPhoto(photo: any) {
     formData.append('userId', '1');
     const response = await axios({
         method: "post",
-        url: BASE_URL,
+        url: BASE_URL + '/signup',
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
     });

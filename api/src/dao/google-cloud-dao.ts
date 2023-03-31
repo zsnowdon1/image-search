@@ -3,7 +3,7 @@ import vision from '@google-cloud/vision';
 import path from 'path';
 import { format } from 'util';
 import { fileURLToPath } from 'url';
-import { Photo } from '../models/photo-dto';
+import { Photo } from '../models/models';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

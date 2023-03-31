@@ -4,3 +4,8 @@ export type Photo = {
     filename: String;
     uploadTime: Date;
 };
+
+export type SignUpInfo = {
+    username: String;
+    password: String;
+};

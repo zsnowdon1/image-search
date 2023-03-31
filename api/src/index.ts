@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import photoRoutes from './routes/photo-routes.js'
+import authRoutes from './routes/auth-routes.js'
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/photo', photoRoutes);
+app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 8080;
 

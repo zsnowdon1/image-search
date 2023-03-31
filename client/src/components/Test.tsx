@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { uploadPhoto } from '../services/PhotoService';
+import { signUp } from '../services/AuthService';
 
 function Test() {
 
@@ -7,10 +8,7 @@ function Test() {
 
     const [signUpData, setSignUpData] = useState({
         username: '',
-        password: '',
-        confirmPassword: '',
-        firstName: '',
-        lastName: ''
+        password: ''
     });
 
     const handleSubmitPhoto = () => {
@@ -23,7 +21,8 @@ function Test() {
     }
 
     const handleSubmitUser = () => {
-
+        console.log(signUpData);
+        signUp(signUpData);
     }
 
     return (
@@ -34,7 +33,7 @@ function Test() {
             </div>
             <div>
                 <input type="text" name="username" onChange={(e) => setSignUpData({ ...signUpData, username: e.target.value })}/>
-                <input type="password"/>
+                <input type="text" name="password" onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}/>
                 <button onClick={handleSubmitUser}>Add user</button>
             </div>
         </div>
