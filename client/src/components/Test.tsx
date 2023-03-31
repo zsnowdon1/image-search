@@ -21,7 +21,6 @@ function Test() {
     }
 
     const handleSubmitUser = () => {
-        console.log(signUpData);
         signUp(signUpData);
     }
 

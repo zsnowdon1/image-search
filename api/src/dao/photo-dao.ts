@@ -1,5 +1,3 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { dbPool } from '../index.js';
 import { Photo } from '../models/models.js';
 

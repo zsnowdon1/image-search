@@ -9,3 +9,8 @@ export type SignUpInfo = {
     username: String;
     password: String;
 };
+
+export type User = {
+    username: String;
+    password: String;
+};

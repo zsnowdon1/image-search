@@ -1,11 +1,11 @@
 import { addPhoto } from "../services/photo-service.js";
 import { SignUpInfo } from "../models/models.js";
+import { signup } from "../services/auth-service.js";
 
 export const signUp = async (req, res) => {
     try {
         let signUpInfo: SignUpInfo = req.body;
-        console.log(signUpInfo);
-        await addPhoto(req.file);
+        await signup(signUpInfo);
         res.status(201).json("req");
     } catch (error) {
         console.log(error.message);
@@ -15,7 +15,8 @@ export const signUp = async (req, res) => {
 
 export const signIn = async (req, res) => {
     try {
-        console.log(req);
+        console.log(req.body);
+        await signup(req.body);
         res.status(201).json("req");
     } catch (error) {
         console.log(error.message);
