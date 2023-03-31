@@ -5,7 +5,11 @@ function Test() {
 
     const [addedFile, setAddedFile] = useState();
 
-    const handleSubmit = () => {
+    const [signUpData, setSignUpData] = useState({
+
+    });
+
+    const handleSubmitPhoto = () => {
         uploadPhoto(addedFile);
     }
 
@@ -14,10 +18,21 @@ function Test() {
         setAddedFile(event.target.files[0]);
     }
 
+    const handleSubmitUser = () => {
+
+    }
+
     return (
         <div>
-            <input type="file" accept="image/*" onChange={handleAddFile}/>
-            <button onClick={handleSubmit}>Add Photo</button>
+            <div>
+                <input type="file" accept="image/*" onChange={handleAddFile}/>
+                <button onClick={handleSubmitPhoto}>Add Photo</button>
+            </div>
+            <div>
+                <input type="text" name="username" onChange={(e) => setSignUpData({ ...signUpData, username: e.target.value })}/>
+                <input type="password"/>
+                <button onClick={handleSubmitUser}>Add user</button>
+            </div>
         </div>
     );
 }
