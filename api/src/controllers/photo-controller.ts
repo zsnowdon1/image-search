@@ -14,6 +14,7 @@ export const upload = multer({storage: storage});
 
 export const uploadPhoto = async (req, res) => {
     try {
+        console.log(req);
         await addPhoto(req.file);
         res.status(201).json("req");
     } catch (error) {
