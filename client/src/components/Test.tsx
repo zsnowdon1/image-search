@@ -6,7 +6,11 @@ function Test() {
     const [addedFile, setAddedFile] = useState();
 
     const [signUpData, setSignUpData] = useState({
-
+        username: '',
+        password: '',
+        confirmPassword: '',
+        firstName: '',
+        lastName: ''
     });
 
     const handleSubmitPhoto = () => {

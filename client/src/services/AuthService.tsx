@@ -1,7 +1,7 @@
 import axios from 'axios'
 const BASE_URL = 'http://localhost:8080/auth';
 
-export async function uploadPhoto(photo: any) {
+export async function create(photo: any) {
     console.log(photo);
     const formData = new FormData();
     formData.append('image', photo);

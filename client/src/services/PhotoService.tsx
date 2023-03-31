@@ -2,9 +2,9 @@ import axios from 'axios'
 const BASE_URL = 'http://localhost:8080/photo';
 
 export async function uploadPhoto(photo: any) {
-    console.log(photo);
     const formData = new FormData();
     formData.append('image', photo);
+    formData.append('userId', '1');
     const response = await axios({
         method: "post",
         url: BASE_URL,
