@@ -12,9 +12,9 @@ export const getUserByUsername = async (username: String): Promise<User> => {
     let user : User;
     await connection.query(getUserQuery, [username]).then(result => user = result[0]);
     return user;
-}
+};
 
 export const createUser = async (user: User) => {
     let connection = await dbPool.getConnection();
     await connection.query(createUserQuery, [user.username, user.password]);
-}
+};

@@ -5,7 +5,7 @@ export type Photo = {
     uploadTime: Date;
 };
 
-export type SignUpInfo = {
+export type LoginInfo = {
     username: String;
     password: String;
 };
