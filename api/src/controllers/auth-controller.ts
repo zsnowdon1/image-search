@@ -1,7 +1,7 @@
 import { LoginInfo } from "../models/models.js";
 import { signup, signin } from "../services/auth-service.js";
 
-export const signUp = async (req, res) => {
+export async function signUp(req, res) {
     let signUpInfo: LoginInfo = req.body;
     try {
         const result = await signup(signUpInfo);
@@ -16,7 +16,7 @@ export const signUp = async (req, res) => {
     }
 };
 
-export const signIn = async (req, res) => {
+export async function signIn(req, res) {
     let signInInfo: LoginInfo = req.body;
     try {
         const result = await signin(signInInfo);

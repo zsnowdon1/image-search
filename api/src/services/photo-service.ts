@@ -1,11 +1,15 @@
 import { addImageToCloud, getImageProperties } from "../dao/google-cloud-dao.js";
 import { uploadPhoto, addPhotoUser, addAttribute } from "../dao/photo-dao.js";
-import { Attribute, Photo, PhotoUser } from "../models/models.js";
+import { Attribute, AttributeDTO, Photo, PhotoUser } from "../models/models.js";
 import { dbPool } from '../index.js';
 
-export const addPhoto = async (file: any, username: String) => {
+export async function addPhoto(file: any, username: String) {
     const photoUrl = await addImageToCloud(file);
-    //const attributes = await getImageProperties(file.originalname);
+    var attributes: AttributeDTO[] = await getImageProperties(file.originalname);
+    console.log(attributes);
+
+
+
     const photo: Photo = {
         bucketUrl: photoUrl,
         filename: file.originalname,
@@ -29,10 +33,10 @@ export const addPhoto = async (file: any, username: String) => {
             photoId: dbFile.id
         };
         attribute = await addAttribute(attribute, connection);
-        console.log(attribute);
-        connection.commit();
+        await connection.commit();
     } catch (e) {
         connection.rollback();
+        return { code: 400, message: "Error in database transactions" };
     }
     return null;
 }

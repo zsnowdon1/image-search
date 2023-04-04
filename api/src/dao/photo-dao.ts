@@ -7,29 +7,19 @@ const attributeInsertQuery = `INSERT INTO image_data.attribute (name, score, pho
 const getIDQuery = `SELECT LAST_INSERT_ID();`;
 
 
-export const uploadPhoto = async (photo: Photo, connection: PoolConnection) => {
-    try {
-        await connection.query(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uploadTime]);
-        await connection.query(getIDQuery).then(result => photo.id = result[0]['LAST_INSERT_ID()']);
-        return photo;
-    } catch (e) {
-
-    }
+export async function uploadPhoto(photo: Photo, connection: PoolConnection) {
+    await connection.query(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uploadTime]);
+    await connection.query(getIDQuery).then(result => photo.id = result[0]['LAST_INSERT_ID()']);
+    return photo;
 };
 
-export const addPhotoUser = async (photoUser: PhotoUser, connection: PoolConnection) => {
-    try {
-        await connection.query(photoUserInsertQuery, [photoUser.username, photoUser.photoId]);
-    } catch (e) {
-    }
+export async function addPhotoUser(photoUser: PhotoUser, connection: PoolConnection) {
+    await connection.query(photoUserInsertQuery, [photoUser.username, photoUser.photoId]);
 };
 
-export const addAttribute = async (attribute: Attribute, connection: PoolConnection) => {
-    try {
-        await connection.query(attributeInsertQuery, [attribute.name, attribute.score, attribute.photoId]);
-        await connection.query(getIDQuery).then(result => attribute.id = result[0]['LAST_INSERT_ID()']);
-        return attribute;
-    } catch (e) {
-
-    }
+// Use batch
+export async function addAttribute (attribute: Attribute, connection: PoolConnection) {
+    await connection.query(attributeInsertQuery, [attribute.name, attribute.score, attribute.photoId]);
+    await connection.query(getIDQuery).then(result => attribute.id = result[0]['LAST_INSERT_ID()']);
+    return attribute;
 };
