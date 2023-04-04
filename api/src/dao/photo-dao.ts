@@ -1,22 +1,25 @@
+import { PoolConnection } from 'mariadb';
 import { dbPool } from '../index.js';
-import { Photo } from '../models/models.js';
+import { Photo, PhotoUser } from '../models/models.js';
 
 const photoInsertQuery = `INSERT INTO image_data.photo (bucket_url, filename, upload_time) VALUES (?, ?, ?)`;
 const photoUserInsertQuery = `INSERT INTO image_data.photo_user VALUES (?, ?)`;
 const getIDQuery = `SELECT LAST_INSERT_ID();`;
 
 
-export const uploadPhoto = async (photo: Photo) => {
-    let connection = await dbPool.getConnection();
-    await connection.beginTransaction();
-
+export const uploadPhoto = async (photo: Photo, connection: PoolConnection) => {
     try {
-        await connection.batch(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uploadTime]);
-        // await connection.batch(photoUserInsertQuery, [])
+        await connection.query(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uploadTime]);
         await connection.query(getIDQuery).then(result => photo.id = result[0]['LAST_INSERT_ID()']);
-        console.log(photo);
+        return photo;
     } catch (e) {
-        connection.rollback();
-    }
 
+    }
+}
+
+export const addPhotoUser = async (photoUser: PhotoUser, connection: PoolConnection) => {
+    try {
+        await connection.query(photoUserInsertQuery, [photoUser.username, photoUser.photoId]);
+    } catch (e) {
+    }
 }

@@ -5,6 +5,11 @@ export type Photo = {
     uploadTime: Date;
 };
 
+export type PhotoUser = {
+    username: String;
+    photoId: number;
+}
+
 export type LoginInfo = {
     username: String;
     password: String;
