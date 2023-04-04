@@ -12,12 +12,11 @@ const storage = multer.memoryStorage({
 });
 export const upload = multer({storage: storage});
 
-export const uploadPhoto = async (req, res) => {
+export async function uploadPhoto(req, res) {
     try {
         await addPhoto(req.file, req.body['username']);
         res.status(201).json("req");
     } catch (error) {
-        console.log(error.message);
         res.status(409).json({ message: error.message });
     }
 };

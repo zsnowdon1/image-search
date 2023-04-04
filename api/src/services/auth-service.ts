@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { getUserByUsername, createUser } from '../dao/user-dao.js';
 import { User } from '../models/models.js';
 
-export const signup = async (user: User) => {
+export async function signup(user: User) {
     const existingUser = await getUserByUsername(user.username);
     if(existingUser) {
         return { code: 400, message: "User already exists" };
@@ -15,7 +15,7 @@ export const signup = async (user: User) => {
     return { code: 201, token: token };
 };
 
-export const signin = async (user: User) => {
+export async function signin (user: User) {
     const existingUser = await getUserByUsername(user.username);
     if(!existingUser) {
         return { code: 404, message: "User not found" };

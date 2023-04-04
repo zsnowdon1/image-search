@@ -26,3 +26,8 @@ export type Attribute = {
     score: number;
     photoId: number;
 };
+
+export type AttributeDTO = {
+    description: String;
+    score: number;
+};
