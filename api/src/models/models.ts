@@ -21,13 +21,7 @@ export type User = {
 };
 
 export type Attribute = {
-    id?: number;
     name: String;
     score: number;
     photoId: number;
-};
-
-export type AttributeDTO = {
-    description: String;
-    score: number;
 };

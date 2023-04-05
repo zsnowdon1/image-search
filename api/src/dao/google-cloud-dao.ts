@@ -3,7 +3,7 @@ import vision from '@google-cloud/vision';
 import path from 'path';
 import { format } from 'util';
 import { fileURLToPath } from 'url';
-import { AttributeDTO } from '../models/models';
+import { Attribute, Photo } from '../models/models';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,16 +39,17 @@ export const addImageToCloud = (file) => new Promise<String | String>((resolve, 
     .end(buffer);
 });
 
-export async function getImageProperties(fileName): Promise<AttributeDTO[]> {
-    const blob = photoBucket.file(fileName.replace(/ /g, "_"));
+export async function getImageProperties(file: Photo): Promise<Attribute[]> {
+    const blob = photoBucket.file(file.filename.replace(/ /g, "_"));
     const client = new vision.ImageAnnotatorClient({
         keyFilename: path.join(__dirname, '../../secrets/rising-apricot-380619-075a8b342646.json')
     });
     let results = await client.labelDetection(
         `gs://${photoBucket.name}/${blob.name}`
     );
-    return results[0].labelAnnotations.map((attribute): AttributeDTO => ({
-        description: attribute.description,
-        score: attribute.score
+    return results[0].labelAnnotations.map((attribute): Attribute => ({
+        name: attribute.description,
+        score: attribute.score,
+        photoId: file.id
     }));
 }
