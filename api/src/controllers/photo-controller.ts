@@ -1,4 +1,4 @@
-import { addPhoto } from "../services/photo-service.js";
+import { addPhoto, getPhotosByUsername } from "../services/photo-service.js";
 import multer from 'multer';
 import path from "path";
 
@@ -17,6 +17,15 @@ export async function uploadPhoto(req, res) {
         const result = await addPhoto(req.file, req.body['username']);
         res.status(result.code).json({ photo: result.photo, attributes: result.attributes });
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        res.status(error.code).json({ message: error.message });
     }
 };
+
+export async function getPhotosByUser(req, res) {
+    try {
+        const result = await getPhotosByUsername(req.query['username']);
+        res.status(result.code).json({ photos: result.photos });
+    } catch (error) {
+        res.status(error.code).json({ message: error.message });
+    }
+}

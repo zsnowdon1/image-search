@@ -21,6 +21,7 @@
     "google-cloud-api": "^4.0.5",
     "mariadb": "^3.1.1",
     "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
     "typescript": "^5.0.2"
   },
   "dependencies": {
