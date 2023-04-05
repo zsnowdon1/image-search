@@ -5,5 +5,11 @@ export async function uploadPhoto(photo: any) {
     formData.append('image', photo);
     formData.append('username', 'zsnowdon');
     const { data } = await api.uploadPhoto(formData);
-    return await data;
+    return data;
+}
+
+export async function getPhotosByUser(username: String) {
+    const { data } = await api.getPhotosByUsername(username);
+    console.log(data);
+    return data;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadPhoto } from '../services/PhotoService';
+import { uploadPhoto, getPhotosByUser } from '../services/PhotoService';
 import { signUp, signIn } from '../services/AuthService';
 
 function Test() {
@@ -32,6 +32,10 @@ function Test() {
         signIn(signInData);
     };
 
+    const getPhotos = () => {
+        getPhotosByUser('zsnowdon');
+    }
+
     return (
         <div>
             <div>
@@ -47,6 +51,9 @@ function Test() {
                 <input type="text" name="username" onChange={(e) => setSignInData({ ...signInData, username: e.target.value })}/>
                 <input type="text" name="password" onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}/>
                 <button onClick={handleSubmitLogin}>Login</button>
+            </div>
+            <div>
+                <button onClick={getPhotos}>Get Photos</button>
             </div>
         </div>
     );
