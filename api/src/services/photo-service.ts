@@ -19,11 +19,12 @@ export async function addPhoto(file: any, username: String) {
 
         photo = await uploadPhoto(photo, connection);
 
-        let attributes: Attribute[] = await getImageProperties(photo);
+        let attributes: Array<Attribute> = await getImageProperties(photo);
 
         const photoUser: PhotoUser = {
             username: username,
-            photoId: photo.id
+            photoId: photo.id,
+            isOwner: true
         };
         await addPhotoUser(photoUser, connection);
 
@@ -38,9 +39,21 @@ export async function addPhoto(file: any, username: String) {
 
 export async function getPhotosByUsername(username: String) {
     try {
-        const photos: Photo[] = await getPhotosByUser(username);
+        const photos: Array<Photo> = await getPhotosByUser(username);
         return { code: 200, photos: photos };
     } catch (error) {
         return { code: 400, message: "Could not receive photos" };
+    }
+};
+
+export async function addUserRoleToPhoto(photoUser: PhotoUser) {
+    console.log(photoUser);
+    try {
+        let connection = await dbPool.getConnection();
+        await addPhotoUser(photoUser, connection);
+        connection.commit();
+        return { code: 200, user: photoUser };
+    } catch (error) {
+        return { code: 400, message: "Could not add user to photo" };
     }
 };

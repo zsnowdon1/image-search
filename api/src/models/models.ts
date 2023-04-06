@@ -8,6 +8,7 @@ export type Photo = {
 export type PhotoUser = {
     username: String;
     photoId: number;
+    isOwner: boolean;
 };
 
 export type LoginInfo = {

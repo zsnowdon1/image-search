@@ -10,6 +10,5 @@ export async function uploadPhoto(photo: any) {
 
 export async function getPhotosByUser(username: String) {
     const { data } = await api.getPhotosByUsername(username);
-    console.log(data);
     return data;
 }
