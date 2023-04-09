@@ -47,7 +47,6 @@ export async function getPhotosByUsername(username: String) {
 };
 
 export async function addUserRoleToPhoto(photoUser: PhotoUser) {
-    console.log(photoUser);
     try {
         let connection = await dbPool.getConnection();
         await addPhotoUser(photoUser, connection);

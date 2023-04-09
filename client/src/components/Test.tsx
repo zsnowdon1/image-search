@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { uploadPhoto, getPhotosByUser } from '../services/PhotoService';
 import { signUp, signIn } from '../services/AuthService';
+import PhotoCard from './PhotoCard';
 
 function Test() {
 
@@ -14,6 +15,10 @@ function Test() {
     const [signInData, setSignInData] = useState({
         username: '',
         password: ''
+    });
+
+    useEffect(() => {
+
     });
 
     const handleSubmitPhoto = () => {

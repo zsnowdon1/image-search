@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { uploadPhoto } from '../services/PhotoService';
-import { signUp, signIn } from '../services/AuthService';
+import { Photo } from '../models/models';
 
-function PhotoCard() {
+const PhotoCard = (photo: Photo) => {
 
     const [addedFile, setAddedFile] = useState();
 
@@ -16,38 +15,10 @@ function PhotoCard() {
         password: ''
     });
 
-    const handleSubmitPhoto = () => {
-        uploadPhoto(addedFile);
-    };
-
-    const handleAddFile = (event: any) => {
-        setAddedFile(event.target.files[0]);
-    };
-
-    const handleSubmitUser = () => {
-        signUp(signUpData);
-    };
-
-    const handleSubmitLogin = () => {
-        signIn(signInData);
-    };
 
     return (
         <div>
-            <div>
-                <input type="file" accept="image/*" onChange={handleAddFile}/>
-                <button onClick={handleSubmitPhoto}>Add Photo</button>
-            </div>
-            <div>
-                <input type="text" name="username" onChange={(e) => setSignUpData({ ...signUpData, username: e.target.value })}/>
-                <input type="text" name="password" onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}/>
-                <button onClick={handleSubmitUser}>Add user</button>
-            </div>
-            <div>
-                <input type="text" name="username" onChange={(e) => setSignInData({ ...signInData, username: e.target.value })}/>
-                <input type="text" name="password" onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}/>
-                <button onClick={handleSubmitLogin}>Login</button>
-            </div>
+            {photo.filename}
         </div>
     );
 }
