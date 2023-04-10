@@ -1,4 +1,4 @@
-import { addPhoto, getPhotosByUsername, addUserRoleToPhoto } from "../services/photo-service.js";
+import { addPhoto, getPhotosByUsername, addUserRoleToPhoto, getPhotoById } from "../services/photo-service.js";
 import multer from 'multer';
 import path from "path";
 
@@ -37,4 +37,12 @@ export async function addUserToPhoto(req, res) {
     } catch (error) {
         res.status(error.code).json({ message: error.message });
     }
-}
+};
+
+export async function getPhoto(req, res) {
+    try {
+        const result = await getPhotoById(req.query['id']);
+    } catch(error) {
+        res.status(error.code).json({ message: error.message });
+    }
+};

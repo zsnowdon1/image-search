@@ -5,6 +5,17 @@ export type Photo = {
     uploadTime: Date;
 };
 
+export type PhotoDAO = {
+    photo: Photo;
+    attributes: Attribute[];
+}
+
+export type AttributeDAO = {
+    id: number;
+    name: String;
+    score: number;
+};
+
 export type PhotoUser = {
     username: String;
     photoId: number;
