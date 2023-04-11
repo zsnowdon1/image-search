@@ -42,6 +42,7 @@ export async function addUserToPhoto(req, res) {
 export async function getPhoto(req, res) {
     try {
         const result = await getPhotoById(req.query['id']);
+        res.status(result.code).json({ photo: result.photo, attributes: result.attribtues });
     } catch(error) {
         res.status(error.code).json({ message: error.message });
     }

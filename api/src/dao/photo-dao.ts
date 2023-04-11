@@ -17,10 +17,15 @@ export async function uploadPhoto(photo: Photo, connection: PoolConnection): Pro
     return photo;
 };
 
-export async function getPhoto(id: number, connection: PoolConnection): Promise<Photo> {
+export async function getPhoto(id: number): Promise<Photo> {
+    let connection = await dbPool.getConnection();
     const photo: Photo = await connection.query(getPhotoQuery, id)
         .then(photo => {
             return {id: photo[0].id, bucketUrl: photo[0].bucket_url, filename: photo[0].filename, uploadTime: photo[0].upload_time};
+        })
+        .catch(error => {
+            console.log(error);
+            return null;
         });
     return photo;
 };
@@ -47,12 +52,14 @@ export async function getPhotosByUser(username: String): Promise<Array<Photo>> {
     return result;
 };
 
-export async function getAttributesById(id: number, connection: PoolConnection): Promise<Array<Attribute>> {
-    const result = await connection.query(getAttributesByIdQuery, id)
-        .then(result => console.log(result));
-    return result[0].map((attribute): AttributeDAO => ({
-        id: attribute.id,
-        name: attribute.name,
-        score: attribute.score
-    }));
+export async function getAttributesById(id: number): Promise<Array<AttributeDAO>> {
+    const connection = await dbPool.getConnection();
+    const result: Array<AttributeDAO> = await connection.query(getAttributesByIdQuery, id).then(result => {
+        return result.map((attribute): AttributeDAO => ({
+            id: attribute.id,
+            name: attribute.name,
+            score: attribute.score
+        }));
+    });
+    return result;
 };
