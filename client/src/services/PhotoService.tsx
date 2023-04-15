@@ -1,4 +1,5 @@
 import * as api from '../api/index';
+import { Photo } from '../models/models';
 
 export async function uploadPhoto(photo: any) {
     const formData = new FormData();
@@ -8,7 +9,7 @@ export async function uploadPhoto(photo: any) {
     return data;
 }
 
-export async function getPhotosByUser(username: String) {
+export async function getPhotosByUser(username: String): Promise<Array<Photo>> {
     const { data } = await api.getPhotosByUsername(username);
-    return data;
+    return data.photos;
 }

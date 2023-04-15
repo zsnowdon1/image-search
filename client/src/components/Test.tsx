@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { uploadPhoto, getPhotosByUser } from '../services/PhotoService';
 import { signUp, signIn } from '../services/AuthService';
 import PhotoCard from './PhotoCard';
+import { Photo } from '../models/models';
 
 function Test() {
 
@@ -17,8 +18,10 @@ function Test() {
         password: ''
     });
 
-    useEffect(() => {
+    const [userPhotos, setUserPhotos] = useState<Photo[]>([]);
 
+    useEffect(() => {
+        getPhotos();
     });
 
     const handleSubmitPhoto = () => {
@@ -38,12 +41,17 @@ function Test() {
     };
 
     const getPhotos = () => {
-        getPhotosByUser('zsnowdon');
-    }
+        getPhotosByUser('zsnowdon').then((result) => {
+            setUserPhotos(result);
+            console.log(userPhotos);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
 
     return (
-        <div>
-            <div>
+        <>
+            {/* <div>
                 <input type="file" accept="image/*" onChange={handleAddFile}/>
                 <button onClick={handleSubmitPhoto}>Add Photo</button>
             </div>
@@ -59,8 +67,11 @@ function Test() {
             </div>
             <div>
                 <button onClick={getPhotos}>Get Photos</button>
-            </div>
-        </div>
+            </div> */}
+            {userPhotos.map((photo) => {
+                <PhotoCard id={photo.id} filename={photo.filename} bucketUrl={photo.bucketUrl} uploadTime={photo.uploadTime} />
+            })};
+        </>
     );
 }
 
