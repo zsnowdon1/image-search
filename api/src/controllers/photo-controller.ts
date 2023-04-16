@@ -1,4 +1,4 @@
-import { addPhoto } from "../services/photo-service.js";
+import { addPhoto, getPhotosByUsername, addUserRoleToPhoto, getPhotoById } from "../services/photo-service.js";
 import multer from 'multer';
 import path from "path";
 
@@ -17,6 +17,33 @@ export async function uploadPhoto(req, res) {
         const result = await addPhoto(req.file, req.body['username']);
         res.status(result.code).json({ photo: result.photo, attributes: result.attributes });
     } catch (error) {
-        res.status(409).json({ message: error.message });
+        res.status(error.code).json({ message: error.message });
+    }
+};
+
+export async function getPhotosByUser(req, res) {
+    try {
+        const result = await getPhotosByUsername(req.query['username']);
+        res.status(result.code).json({ photos: result.photos });
+    } catch (error) {
+        res.status(error.code).json({ message: error.message });
+    }
+};
+
+export async function addUserToPhoto(req, res) {
+    try {
+        const result = await addUserRoleToPhoto(req.body);
+        res.status(result.code).json({ userRole: result.user });
+    } catch (error) {
+        res.status(error.code).json({ message: error.message });
+    }
+};
+
+export async function getPhoto(req, res) {
+    try {
+        const result = await getPhotoById(req.query['id']);
+        res.status(result.code).json({ photo: result.photo, attributes: result.attribtues });
+    } catch(error) {
+        res.status(error.code).json({ message: error.message });
     }
 };

@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
 CREATE TABLE IF NOT EXISTS `photo_user` (
     `username` varchar(100) NOT NULL,
     `photo_id` int(10) unsigned NOT NULL,
+    `is_owner` boolean NOT NULL,
     PRIMARY KEY (`username`, `photo_id`),
     CONSTRAINT  `pu_username` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT  `pu_photo_id` FOREIGN KEY (`photo_id`) REFERENCES `photo` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
