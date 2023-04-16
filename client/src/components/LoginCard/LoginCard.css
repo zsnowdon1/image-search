@@ -1,0 +1,12 @@
+.form {
+    display: grid;
+}
+
+.input-1 {
+    display: grid;
+    margin-bottom: 1rem;
+}
+
+.input {
+    display: grid;
+}
