@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { signUp } from '../../services/AuthService';
 import './SignUpCard.css';
 
-export function SignUpCard() {
+export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}) {
 
     const [signUpData, setSignUpData] = useState({
         username: '',
@@ -22,9 +22,13 @@ export function SignUpCard() {
         signUp(signUpData);
     };
 
+    function handleCardChange(e: any) {
+        props.setSignIn(true);
+    };
+
     return (
-        <form className="form" onSubmit={handleSignUp}>
-            <div className="input-1">
+        <form className="card" onSubmit={handleSignUp}>
+            <div className="input">
                 <label>Username</label>
                 <input type="text" onChange={handleUsernameChange}></input>
             </div>
@@ -33,6 +37,7 @@ export function SignUpCard() {
                 <input type="text" onChange={handlePasswordChange}></input>
             </div>
             <input type="submit" value="Sign Up"/>
+            <button type="button" className="switch-card" onClick={handleCardChange}>Already have an account?</button>
         </form>
     );
 };
