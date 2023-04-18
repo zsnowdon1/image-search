@@ -6,8 +6,6 @@ CREATE TABLE IF NOT EXISTS `user` (
     `password` varchar(255) NOT NULL,
     PRIMARY KEY (`username`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
-INSERT INTO image_data.`user`
-    VALUES ('zsnowdon', 'password');
 
 CREATE TABLE IF NOT EXISTS `photo` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -20,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
 CREATE TABLE IF NOT EXISTS `photo_user` (
     `username` varchar(100) NOT NULL,
     `photo_id` int(10) unsigned NOT NULL,
+    `is_owner` boolean NOT NULL,
     PRIMARY KEY (`username`, `photo_id`),
     CONSTRAINT  `pu_username` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT  `pu_photo_id` FOREIGN KEY (`photo_id`) REFERENCES `photo` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE

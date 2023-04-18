@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { uploadPhoto } from '../services/PhotoService';
+import React, { useEffect, useState } from 'react';
+import { uploadPhoto, getPhotosByUser } from '../services/PhotoService';
 import { signUp, signIn } from '../services/AuthService';
+import PhotoCard from './PhotoCard';
+import { Photo } from '../models/models';
 
 function Test() {
 
@@ -14,6 +16,12 @@ function Test() {
     const [signInData, setSignInData] = useState({
         username: '',
         password: ''
+    });
+
+    const [userPhotos, setUserPhotos] = useState<Photo[]>([]);
+
+    useEffect(() => {
+        getPhotos();
     });
 
     const handleSubmitPhoto = () => {
@@ -32,9 +40,18 @@ function Test() {
         signIn(signInData);
     };
 
+    const getPhotos = () => {
+        getPhotosByUser('zsnowdon').then((result) => {
+            setUserPhotos(result);
+            console.log(userPhotos);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
     return (
-        <div>
-            <div>
+        <>
+            {/* <div>
                 <input type="file" accept="image/*" onChange={handleAddFile}/>
                 <button onClick={handleSubmitPhoto}>Add Photo</button>
             </div>
@@ -48,7 +65,13 @@ function Test() {
                 <input type="text" name="password" onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}/>
                 <button onClick={handleSubmitLogin}>Login</button>
             </div>
-        </div>
+            <div>
+                <button onClick={getPhotos}>Get Photos</button>
+            </div> */}
+            {userPhotos.map((photo) => {
+                <PhotoCard id={photo.id} filename={photo.filename} bucketUrl={photo.bucketUrl} uploadTime={photo.uploadTime} />
+            })};
+        </>
     );
 }
 
