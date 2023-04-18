@@ -1,17 +1,27 @@
 import * as api from '../api/index';
+import Cookies from "universal-cookie";
+import jwt from 'jwt-decode';
 
-export const signUp = async (signUpData: any) => {
-    try {
-        api.signup(signUpData);
-    } catch (error: any) {
-        console.log(error.message);
+export async function signUp(signUpData: any): Promise<String> {
+    const cookies = new Cookies();
+    const response = await  api.signup(signUpData);
+    if(response.status !== 201) {
+        return '';
     }
-}
+    const decoded: any = jwt(response.data.token);
+    cookies.set('jwt', response.data.token, {expires: new Date(decoded.expires * 1000)});
+    localStorage.setItem('user', decoded.username);
+    return decoded.username;
+};
 
-export const signIn = async (signInData: any) => {
-    try {
-        const { data } = await api.signin(signInData);
-    } catch (error: any) {
-        console.log(error.message);
+export async function signIn(signInData: any): Promise<String> {
+    const cookies = new Cookies();
+    const response = await api.signin(signInData);
+    if(response.status !== 200) {
+        return '';
     }
-}
+    const decoded: any = jwt(response.data.token);
+    cookies.set('jwt', response.data.token, {expires: new Date(decoded.expires * 1000)});
+    localStorage.setItem('user', decoded.username);
+    return decoded.username;
+};

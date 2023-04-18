@@ -20,7 +20,6 @@ export async function signIn(req, res) {
     let signInInfo: LoginInfo = req.body;
     try {
         const result = await signin(signInInfo);
-        console.log(result);
         if(result.code == 200) {
             return res.status(result.code).json({token: result.token});
         } else {
