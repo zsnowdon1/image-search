@@ -18,25 +18,20 @@ export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}
     };
 
     function handleSignUp(e: any) {
-        e.preventDefault();
         signUp(signUpData);
+        e.preventDefault();
     };
 
     function handleCardChange(e: any) {
         props.setSignIn(true);
+        e.preventDefault();
     };
 
     return (
         <form className="card" onSubmit={handleSignUp}>
-            <div className="input">
-                <label>Username</label>
-                <input type="text" onChange={handleUsernameChange}></input>
-            </div>
-            <div className="input">
-                <label>Password</label>
-                <input type="text" onChange={handlePasswordChange}></input>
-            </div>
-            <input type="submit" value="Sign Up"/>
+            <input type="text" placeholder='Username' onChange={handleUsernameChange}></input>
+            <input type="text" placeholder='Password' onChange={handlePasswordChange}></input>
+            <input type="submit" className="submit" value="Sign Up"/>
             <button type="button" className="switch-card" onClick={handleCardChange}>Already have an account?</button>
         </form>
     );

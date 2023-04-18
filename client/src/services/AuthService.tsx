@@ -9,7 +9,6 @@ export const signUp = async (signUpData: any) => {
 }
 
 export const signIn = async (signInData: any) => {
-    console.log(signInData);
     try {
         const { data } = await api.signin(signInData);
     } catch (error: any) {

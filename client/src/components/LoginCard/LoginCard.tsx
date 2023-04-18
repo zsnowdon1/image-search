@@ -18,8 +18,8 @@ export function LoginCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>})
     };
 
     function handleLogin(e: any) {
-        e.preventDefault();
         signIn(loginData);
+        e.preventDefault();
     };
 
     function handleCardChange(e: any) {
@@ -28,16 +28,10 @@ export function LoginCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>})
 
     return (
         <form className="card" onSubmit={handleLogin}>
-            <div className="input">
-                <label>Username</label>
-                <input type="text" onChange={handleUsernameChange}></input>
-            </div>
-            <div className="input">
-                <label>Password</label>
-                <input type="text" onChange={handlePasswordChange}></input>
-            </div>
-            <input type="submit" value="Login"/>
-            <button type="button" className="switch-card" onClick={handleCardChange}>Create Account</button>
+            <input type="text" placeholder='Username' onChange={handleUsernameChange}></input>
+            <input type="text" placeholder='Password' onChange={handlePasswordChange}></input>
+            <input type="submit" className="submit" value="Login"/>
+            <button type="button" className="switch-card" onClick={handleCardChange}>Don't have an account? Sign up</button>
         </form>
     );
 };
