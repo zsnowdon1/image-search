@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { signUp } from '../../services/AuthService';
+import { Navigate, useNavigate } from 'react-router-dom';
 import './SignUpCard.css';
 
 export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}) {
@@ -8,6 +9,7 @@ export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}
         username: '',
         password: ''
     });
+    const navigate = useNavigate();
 
     function handleUsernameChange(e: any) {
         setSignUpData({ ...signUpData, username: e.target.value });
@@ -17,9 +19,14 @@ export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}
         setSignUpData({ ...signUpData, password: e.target.value });
     };
 
-    function handleSignUp(e: any) {
-        signUp(signUpData);
+    async function handleSignUp(e: any) {
         e.preventDefault();
+        const response = await signUp(signUpData).catch(error => {
+            console.log(error);
+        });
+        if(response) {
+            navigate('/photos');
+        }
     };
 
     function handleCardChange(e: any) {

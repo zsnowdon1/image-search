@@ -1,4 +1,5 @@
 import React, { Dispatch, MouseEventHandler, SetStateAction, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../services/AuthService';
 import './LoginCard.css';
 
@@ -9,6 +10,8 @@ export function LoginCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>})
         password: ''
     });
 
+    const navigate = useNavigate();
+
     function handleUsernameChange(e: any) {
         setLoginData({ ...loginData, username: e.target.value });
     };
@@ -17,9 +20,14 @@ export function LoginCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>})
         setLoginData({ ...loginData, password: e.target.value });
     };
 
-    function handleLogin(e: any) {
-        signIn(loginData);
+    async function handleLogin(e: any) {
         e.preventDefault();
+        const response = await signIn(loginData).catch(error => {
+            console.log(error);
+        });
+        if(response) {
+            navigate('/photos');
+        }
     };
 
     function handleCardChange(e: any) {

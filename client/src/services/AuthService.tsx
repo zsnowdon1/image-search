@@ -2,24 +2,26 @@ import * as api from '../api/index';
 import Cookies from "universal-cookie";
 import jwt from 'jwt-decode';
 
-export const signUp = async (signUpData: any) => {
+export async function signUp(signUpData: any): Promise<String> {
     const cookies = new Cookies();
-    try {
-        const { data } = await api.signup(signUpData);
-        const decoded: any = jwt(data.token);
-        cookies.set('jwt', data.token, {expires: new Date(decoded.expires * 1000)});
-    } catch (error: any) {
-        console.log(error.message);
+    const response = await  api.signup(signUpData);
+    if(response.status !== 201) {
+        return '';
     }
+    const decoded: any = jwt(response.data.token);
+    cookies.set('jwt', response.data.token, {expires: new Date(decoded.expires * 1000)});
+    localStorage.setItem('user', decoded.username);
+    return decoded.username;
 };
 
-export const signIn = async (signInData: any) => {
+export async function signIn(signInData: any): Promise<String> {
     const cookies = new Cookies();
-    try {
-        const { data } = await api.signin(signInData);
-        const decoded: any = jwt(data.token);
-        cookies.set('jwt', data.token, {expires: new Date(decoded.expires * 1000)});
-    } catch (error: any) {
-        console.log(error.message);
+    const response = await api.signin(signInData);
+    if(response.status !== 200) {
+        return '';
     }
+    const decoded: any = jwt(response.data.token);
+    cookies.set('jwt', response.data.token, {expires: new Date(decoded.expires * 1000)});
+    localStorage.setItem('user', decoded.username);
+    return decoded.username;
 };
