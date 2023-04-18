@@ -17,7 +17,6 @@ export async function signup(user: User) {
 
 export async function signin (user: User) {
     const existingUser = await getUserByUsername(user.username);
-    console.log(existingUser);
     if(!existingUser) {
         return { code: 404, message: "User not found" };
     }
