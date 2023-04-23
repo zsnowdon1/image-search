@@ -2,7 +2,7 @@ import * as api from '../api/index';
 import Cookies from "universal-cookie";
 import jwt from 'jwt-decode';
 
-export async function signUp(signUpData: any): Promise<String> {
+export async function signUp(signUpData: any): Promise<string> {
     const cookies = new Cookies();
     const response = await  api.signup(signUpData);
     if(response.status !== 201) {
@@ -14,7 +14,7 @@ export async function signUp(signUpData: any): Promise<String> {
     return decoded.username;
 };
 
-export async function signIn(signInData: any): Promise<String> {
+export async function signIn(signInData: any): Promise<string> {
     const cookies = new Cookies();
     const response = await api.signin(signInData);
     if(response.status !== 200) {

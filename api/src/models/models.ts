@@ -1,8 +1,9 @@
 export type Photo = {
     id?: number;
-    bucketUrl: String;
-    filename: String;
+    bucketUrl: string;
+    filename: string;
     uploadTime: Date;
+    downloadUrl?: string;
 };
 
 export type PhotoDAO = {
@@ -12,28 +13,28 @@ export type PhotoDAO = {
 
 export type AttributeDAO = {
     id: number;
-    name: String;
+    name: string;
     score: number;
 };
 
 export type PhotoUser = {
-    username: String;
+    username: string;
     photoId: number;
     isOwner: boolean;
 };
 
 export type LoginInfo = {
-    username: String;
-    password: String;
+    username: string;
+    password: string;
 };
 
 export type User = {
-    username: String;
-    password: String;
+    username: string;
+    password: string;
 };
 
 export type Attribute = {
-    name: String;
+    name: string;
     score: number;
     photoId: number;
 };

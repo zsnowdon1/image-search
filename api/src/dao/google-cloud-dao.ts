@@ -1,4 +1,4 @@
-import { Storage } from '@google-cloud/storage';
+import { GetSignedUrlResponse, Storage } from '@google-cloud/storage';
 import vision from '@google-cloud/vision';
 import path from 'path';
 import { format } from 'util';
@@ -15,7 +15,7 @@ const googleCloud = new Storage({
 
 const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
-export const addImageToCloud = (file) => new Promise<String | String>((resolve, reject) => {
+export const addImageToCloud = (file) => new Promise<string | string>((resolve, reject) => {
     const { originalname, buffer } = file;
   
     const blob = photoBucket.file(originalname.replace(/ /g, "_"));
@@ -28,7 +28,7 @@ export const addImageToCloud = (file) => new Promise<String | String>((resolve, 
     });
 
     blobStream.on('finish', async () => {
-        const publicUrl: String = format(
+        const publicUrl: string = format(
             `https://storage.googleapis.com/${photoBucket.name}/${blob.name}`
         );
         resolve(publicUrl);
@@ -38,6 +38,14 @@ export const addImageToCloud = (file) => new Promise<String | String>((resolve, 
     })
     .end(buffer);
 });
+
+export async function getImageFromCloud(filename: string): Promise<string> {
+    const result: GetSignedUrlResponse = await photoBucket.file(filename).getSignedUrl({
+        action: 'read',
+        expires: new Date(new Date().getTime() + 86400000)
+    });
+    return result[0];
+}
 
 export async function getImageProperties(file: Photo): Promise<Attribute[]> {
     const blob = photoBucket.file(file.filename.replace(/ /g, "_"));

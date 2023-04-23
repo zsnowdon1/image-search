@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { uploadPhoto, getPhotosByUser } from '../services/PhotoService';
 import { signUp, signIn } from '../services/AuthService';
-import PhotoCard from './PhotoCard';
+import { PhotoCard } from './PhotoCard/PhotoCard';
 import { Photo } from '../models/models';
 
 function Test() {
@@ -51,7 +51,7 @@ function Test() {
 
     return (
         <>
-            {/* <div>
+            <div>
                 <input type="file" accept="image/*" onChange={handleAddFile}/>
                 <button onClick={handleSubmitPhoto}>Add Photo</button>
             </div>
@@ -67,10 +67,7 @@ function Test() {
             </div>
             <div>
                 <button onClick={getPhotos}>Get Photos</button>
-            </div> */}
-            {userPhotos.map((photo) => {
-                <PhotoCard id={photo.id} filename={photo.filename} bucketUrl={photo.bucketUrl} uploadTime={photo.uploadTime} />
-            })};
+            </div>
         </>
     );
 }

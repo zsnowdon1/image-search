@@ -1,9 +1,9 @@
-import { addImageToCloud, getImageProperties } from "../dao/google-cloud-dao.js";
+import { addImageToCloud, getImageFromCloud, getImageProperties } from "../dao/google-cloud-dao.js";
 import { uploadPhoto, addPhotoUser, addAttributes, getPhotosByUser, getPhoto, getAttributesById } from "../dao/photo-dao.js";
 import { Attribute, AttributeDAO, Photo, PhotoDAO, PhotoUser } from "../models/models.js";
 import { dbPool } from '../index.js';
 
-export async function addPhoto(file: any, username: String) {
+export async function addPhoto(file: any, username: string) {
     const photoUrl = await addImageToCloud(file);
 
 
@@ -37,9 +37,16 @@ export async function addPhoto(file: any, username: String) {
     }
 };
 
-export async function getPhotosByUsername(username: String) {
+export async function getPhotosByUsername(username: string) {
     try {
-        const photos: Array<Photo> = await getPhotosByUser(username);
+        var photos: Array<Photo> = await getPhotosByUser(username);
+        photos = await Promise.all(photos.map(async (photo): Promise<Photo> => ({
+            id: photo.id,
+            filename: photo.filename,
+            bucketUrl: photo.bucketUrl,
+            uploadTime: photo.uploadTime,
+            downloadUrl: await getImageFromCloud(photo.filename)
+        })));
         return { code: 200, photos: photos };
     } catch (error) {
         return { code: 400, message: "Could not receive photos" };

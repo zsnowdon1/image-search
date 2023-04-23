@@ -24,6 +24,7 @@ export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}
         const response = await signUp(signUpData).catch(error => {
             console.log(error);
         });
+        console.log(response);
         if(response) {
             navigate('/photos');
         }

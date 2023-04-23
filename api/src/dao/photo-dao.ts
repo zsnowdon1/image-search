@@ -42,7 +42,7 @@ export async function addAttributes(attributes: Array<Attribute>, connection: Po
     .catch(error => console.log(error));
 };
 
-export async function getPhotosByUser(username: String): Promise<Array<Photo>> {
+export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
     let connection = await dbPool.getConnection();
     const result: Array<Photo> = await connection.query(getPhotosByUsernameQuery, [username])
         .then(result => result.map((photo): Photo => {

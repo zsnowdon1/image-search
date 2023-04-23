@@ -9,7 +9,11 @@ export async function uploadPhoto(photo: any) {
     return data;
 }
 
-export async function getPhotosByUser(username: String): Promise<Array<Photo>> {
+export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
     const { data } = await api.getPhotosByUsername(username);
     return data.photos;
+}
+
+export async function downloadPhoto(photo: Photo) {
+    
 }
