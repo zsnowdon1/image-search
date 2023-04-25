@@ -1,6 +1,7 @@
 import { PoolConnection } from 'mariadb';
 import { dbPool } from '../index.js';
 import { Attribute, AttributeDAO, Photo, PhotoUser } from '../models/models.js';
+import { getImageFromCloud } from './google-cloud-dao.js';
 
 const photoInsertQuery = `INSERT INTO image_data.photo (bucket_url, filename, upload_time) VALUES (?, ?, ?)`;
 const photoUserInsertQuery = `INSERT INTO image_data.photo_user (username, photo_id, is_owner) VALUES (?, ?, ?)`;
@@ -12,7 +13,10 @@ const getAttributesByIdQuery = `SELECT id, name, score FROM image_data.attribute
 
 export async function uploadPhoto(photo: Photo, connection: PoolConnection): Promise<Photo> {
     await connection.query(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uploadTime])
-        .then(result => photo.id = Number(result.insertId))
+        .then(async result => (
+            photo.id = Number(result.insertId),
+            photo.downloadUrl = await getImageFromCloud(photo.filename)
+        ))
         .catch(error => console.log(error));
     return photo;
 };

@@ -22,7 +22,7 @@ function Test() {
 
     useEffect(() => {
         getPhotos();
-    });
+    }, []);
 
     const handleSubmitPhoto = () => {
         uploadPhoto(addedFile);
