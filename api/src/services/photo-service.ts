@@ -30,9 +30,11 @@ export async function addPhoto(file: any, username: string) {
 
         await addAttributes(attributes, connection);
         await connection.commit();
+        connection.end();
         return { code: 201, photo: photo, attributes: attributes };
     } catch (error) {
         connection.rollback();
+        connection.end();
         return { code: 400, message: "Error in database transactions" };
     }
 };
@@ -64,12 +66,14 @@ export async function getPhotoById(id: number) {
 };
 
 export async function addUserRoleToPhoto(photoUser: PhotoUser) {
+    let connection = await dbPool.getConnection();
     try {
-        let connection = await dbPool.getConnection();
         await addPhotoUser(photoUser, connection);
         connection.commit();
+        connection.end();
         return { code: 200, user: photoUser };
     } catch (error) {
+        connection.end();
         return { code: 400, message: "Could not add user to photo" };
     }
 };

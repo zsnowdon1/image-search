@@ -53,6 +53,7 @@ export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
             return {id: photo.id, bucketUrl: photo.bucket_url, filename: photo.filename, uploadTime: photo.upload_time};
         }))
         .catch(error => console.log(error));
+    connection.end();
     return result;
 };
 
@@ -65,5 +66,6 @@ export async function getAttributesById(id: number): Promise<Array<AttributeDAO>
             score: attribute.score
         }));
     });
+    connection.end();
     return result;
 };
