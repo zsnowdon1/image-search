@@ -4,7 +4,6 @@ import path from 'path';
 import { format } from 'util';
 import { fileURLToPath } from 'url';
 import { Attribute, Photo } from '../models/models';
-import { randomUUID } from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,9 +16,8 @@ const googleCloud = new Storage({
 const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
 export const addImageToCloud = (file) => new Promise<string | string>((resolve, reject) => {
-    const { originalname, buffer } = file;
-    const newId = randomUUID();
-    const blob = photoBucket.file(originalname.replace(/ /g, "_"));
+    const { uniqueName, buffer } = file;
+    const blob = photoBucket.file(uniqueName.replace(/ /g, "_"));
     const blobStream = blob.createWriteStream({
         resumable: false
     });

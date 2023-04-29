@@ -5,13 +5,14 @@ import { dbPool } from '../index.js';
 import { randomUUID } from "crypto";
 
 export async function addPhoto(file: any, username: string) {
+    const uniqueName = file.originalname + "-" + randomUUID();
+    file.uniqueName = uniqueName;
     const photoUrl = await addImageToCloud(file);
-
 
     let photo: Photo = {
         bucketUrl: photoUrl,
         filename: file.originalname,
-        uniqueName: randomUUID() + "-" + file.originalname,
+        uniqueName: uniqueName,
         uploadTime: new Date()
     };
 
@@ -25,14 +26,9 @@ export async function addPhoto(file: any, username: string) {
             photoId: photo.id,
             isOwner: true
         };
-        let attributes: Array<Attribute> = await Promise.all([
-            addPhotoUser(photoUser, connection),
-            getImageProperties(photo)
-        ])[1];
-        console.log(attributes);
-        // await addPhotoUser(photoUser, connection);
 
-        // let attributes: Array<Attribute> = await getImageProperties(photo);
+        let attributes: Array<Attribute> = await getImageProperties(photo);
+        await addPhotoUser(photoUser, connection);
 
         await addAttributes(attributes, connection);
 

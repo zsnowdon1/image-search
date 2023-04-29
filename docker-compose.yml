@@ -19,7 +19,6 @@ services:
       context: ./api
     restart: unless-stopped
     env_file: dev.env
-    command: npm run build -- --inspect=0.0.0.0:9229
     ports:
       - 8080:8080
       - 9229:9229
