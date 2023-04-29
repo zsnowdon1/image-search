@@ -2,6 +2,7 @@ import { addImageToCloud, getImageFromCloud, getImageProperties } from "../dao/g
 import { uploadPhoto, addPhotoUser, addAttributes, getPhotosByUser, getPhoto, getAttributesById } from "../dao/photo-dao.js";
 import { Attribute, AttributeDAO, Photo, PhotoDAO, PhotoUser } from "../models/models.js";
 import { dbPool } from '../index.js';
+import { randomUUID } from "crypto";
 
 export async function addPhoto(file: any, username: string) {
     const photoUrl = await addImageToCloud(file);
@@ -10,6 +11,7 @@ export async function addPhoto(file: any, username: string) {
     let photo: Photo = {
         bucketUrl: photoUrl,
         filename: file.originalname,
+        uniqueName: randomUUID() + "-" + file.originalname,
         uploadTime: new Date()
     };
 
@@ -18,17 +20,22 @@ export async function addPhoto(file: any, username: string) {
     try {
 
         photo = await uploadPhoto(photo, connection);
-
-        let attributes: Array<Attribute> = await getImageProperties(photo);
-
         const photoUser: PhotoUser = {
             username: username,
             photoId: photo.id,
             isOwner: true
         };
-        await addPhotoUser(photoUser, connection);
+        let attributes: Array<Attribute> = await Promise.all([
+            addPhotoUser(photoUser, connection),
+            getImageProperties(photo)
+        ])[1];
+        console.log(attributes);
+        // await addPhotoUser(photoUser, connection);
+
+        // let attributes: Array<Attribute> = await getImageProperties(photo);
 
         await addAttributes(attributes, connection);
+
         await connection.commit();
         connection.end();
         return { code: 201, photo: photo, attributes: attributes };
@@ -45,6 +52,7 @@ export async function getPhotosByUsername(username: string) {
         photos = await Promise.all(photos.map(async (photo): Promise<Photo> => ({
             id: photo.id,
             filename: photo.filename,
+            uniqueName: photo.uniqueName,
             bucketUrl: photo.bucketUrl,
             uploadTime: photo.uploadTime,
             downloadUrl: await getImageFromCloud(photo.filename)

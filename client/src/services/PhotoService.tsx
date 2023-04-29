@@ -10,8 +10,9 @@ export async function uploadPhoto(photo: any) {
 }
 
 export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
-    const { data } = await api.getPhotosByUsername(username);
-    return data.photos;
+    const result = await api.getPhotosByUsername(username);
+    console.log(result.data);
+    return result.data.photos;
 }
 
 export async function downloadPhoto(photo: Photo) {

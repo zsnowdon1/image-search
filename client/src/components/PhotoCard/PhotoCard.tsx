@@ -5,17 +5,18 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import './PhotoCard.css';
 
 export function PhotoCard(photo: Photo) {
 
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card className="card" sx={{ maxWidth: 345 }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
                     height="500"
                     src={photo.downloadUrl}
-                    alt="green iguana"/>
+                    alt="error loading"/>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {photo.filename}

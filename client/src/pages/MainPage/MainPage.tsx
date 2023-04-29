@@ -36,7 +36,7 @@ export function MainPage() {
 
     function renderPhotos() {
         return userPhotos.map(photo => {
-            return <PhotoCard id={photo.id} bucketUrl={photo.bucketUrl} filename={photo.filename} uploadTime={photo.uploadTime} downloadUrl={photo.downloadUrl}/>
+            return <PhotoCard {...photo}/>
         });
     }
 

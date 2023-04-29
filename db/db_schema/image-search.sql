@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `bucket_url` varchar(250) NOT NULL,
     `filename` varchar(100) NOT NULL,
+    `unique_name` varchar(100) NOT NULL,
     `upload_time` TIMESTAMP NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;

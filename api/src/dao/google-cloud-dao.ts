@@ -4,6 +4,7 @@ import path from 'path';
 import { format } from 'util';
 import { fileURLToPath } from 'url';
 import { Attribute, Photo } from '../models/models';
+import { randomUUID } from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +18,7 @@ const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
 export const addImageToCloud = (file) => new Promise<string | string>((resolve, reject) => {
     const { originalname, buffer } = file;
-  
+    const newId = randomUUID();
     const blob = photoBucket.file(originalname.replace(/ /g, "_"));
     const blobStream = blob.createWriteStream({
         resumable: false
@@ -39,16 +40,16 @@ export const addImageToCloud = (file) => new Promise<string | string>((resolve, 
     .end(buffer);
 });
 
-export async function getImageFromCloud(filename: string): Promise<string> {
-    const result: GetSignedUrlResponse = await photoBucket.file(filename).getSignedUrl({
+export async function getImageFromCloud(uniqueName: string): Promise<string> {
+    const result: GetSignedUrlResponse = await photoBucket.file(uniqueName).getSignedUrl({
         action: 'read',
         expires: new Date(new Date().getTime() + 86400000)
     });
     return result[0];
-}
+};
 
 export async function getImageProperties(file: Photo): Promise<Attribute[]> {
-    const blob = photoBucket.file(file.filename.replace(/ /g, "_"));
+    const blob = photoBucket.file(file.uniqueName.replace(/ /g, "_"));
     const client = new vision.ImageAnnotatorClient({
         keyFilename: path.join(__dirname, '../../secrets/rising-apricot-380619-075a8b342646.json')
     });
@@ -60,4 +61,4 @@ export async function getImageProperties(file: Photo): Promise<Attribute[]> {
         score: attribute.score,
         photoId: file.id
     }));
-}
+};

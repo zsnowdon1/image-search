@@ -3,19 +3,19 @@ import { dbPool } from '../index.js';
 import { Attribute, AttributeDAO, Photo, PhotoUser } from '../models/models.js';
 import { getImageFromCloud } from './google-cloud-dao.js';
 
-const photoInsertQuery = `INSERT INTO image_data.photo (bucket_url, filename, upload_time) VALUES (?, ?, ?)`;
+const photoInsertQuery = `INSERT INTO image_data.photo (bucket_url, filename, unique_name, upload_time) VALUES (?, ?, ?, ?)`;
 const photoUserInsertQuery = `INSERT INTO image_data.photo_user (username, photo_id, is_owner) VALUES (?, ?, ?)`;
 const attributeInsertQuery = `INSERT INTO image_data.attribute (name, score, photo_id) VALUES (?, ?, ?)`;
-const getPhotosByUsernameQuery = `SELECT id, bucket_url, filename, upload_time FROM image_data.photo AS t1 INNER JOIN image_data.photo_user AS t2 ON t1.id = t2.photo_id WHERE t2.username = ?`;
+const getPhotosByUsernameQuery = `SELECT id, bucket_url, filename, unique_name, upload_time FROM image_data.photo AS t1 INNER JOIN image_data.photo_user AS t2 ON t1.id = t2.photo_id WHERE t2.username = ?`;
 const getPhotoQuery =  `SELECT id, bucket_url, filename, upload_time FROM image_data.photo where id = ?`;
 const getAttributesByIdQuery = `SELECT id, name, score FROM image_data.attribute where photo_id = ?`;
 
 
 export async function uploadPhoto(photo: Photo, connection: PoolConnection): Promise<Photo> {
-    await connection.query(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uploadTime])
+    await connection.query(photoInsertQuery, [photo.bucketUrl, photo.filename, photo.uniqueName, photo.uploadTime])
         .then(async result => (
             photo.id = Number(result.insertId),
-            photo.downloadUrl = await getImageFromCloud(photo.filename)
+            photo.downloadUrl = await getImageFromCloud(photo.uniqueName)
         ))
         .catch(error => console.log(error));
     return photo;
@@ -50,7 +50,7 @@ export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
     let connection = await dbPool.getConnection();
     const result: Array<Photo> = await connection.query(getPhotosByUsernameQuery, [username])
         .then(result => result.map((photo): Photo => {
-            return {id: photo.id, bucketUrl: photo.bucket_url, filename: photo.filename, uploadTime: photo.upload_time};
+            return {id: photo.id, bucketUrl: photo.bucket_url, filename: photo.filename, uniqueName: photo.unique_name, uploadTime: photo.upload_time};
         }))
         .catch(error => console.log(error));
     connection.end();
