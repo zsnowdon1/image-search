@@ -3,6 +3,11 @@ import { PhotoCard } from '../../components/PhotoCard/PhotoCard';
 import { Photo } from '../../models/models';
 import { getPhotosByUser, uploadPhoto } from '../../services/PhotoService';
 
+interface photoProps {
+    photo: Photo,
+    handleDelete: any
+}
+
 export function MainPage() {
 
     const [userPhotos, setUserPhotos] = useState<Array<Photo>>([]);
@@ -25,19 +30,27 @@ export function MainPage() {
         }
     };
 
-    const handleAddFile = (event: any) => {
+    async function handleAddFile(event: any) {
         setAddedFile(event.target.files[0]);
     };
 
-    const handleSubmitPhoto = async () => {
+    async function handleSubmitPhoto() {
         const photo = await uploadPhoto(addedFile);
         setUserPhotos(userPhotos => [...userPhotos, photo.photo]);
     };
 
-    function renderPhotos() {
-        return userPhotos.map(photo => {
-            return <PhotoCard {...photo}/>
-        });
+    function handleDeletePhoto(id: number) {
+        console.log(id);
+    }
+
+    function renderPhotos(): any {
+        return (
+            <div className="photos">
+                {userPhotos.map(photo => {
+                    return <PhotoCard photo={photo} handleDelete={handleDeletePhoto}/>;
+                })}
+            </div>
+        )
     }
 
     return (

@@ -51,7 +51,7 @@ export async function getPhotosByUsername(username: string) {
             uniqueName: photo.uniqueName,
             bucketUrl: photo.bucketUrl,
             uploadTime: photo.uploadTime,
-            downloadUrl: await getImageFromCloud(photo.filename)
+            downloadUrl: await getImageFromCloud(photo.uniqueName)
         })));
         return { code: 200, photos: photos };
     } catch (error) {

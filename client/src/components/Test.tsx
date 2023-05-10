@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { uploadPhoto, getPhotosByUser } from '../services/PhotoService';
 import { signUp, signIn } from '../services/AuthService';
-import { PhotoCard } from './PhotoCard/PhotoCard';
 import { Photo } from '../models/models';
 
 function Test() {

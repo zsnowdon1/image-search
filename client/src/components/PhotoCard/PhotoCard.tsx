@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
 import { Photo } from '../../models/models';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
 import './PhotoCard.css';
 
-export function PhotoCard(photo: Photo) {
+interface photoProps {
+    photo: Photo,
+    handleDelete: (id: number) => any
+};
+
+export function PhotoCard({photo, handleDelete}: photoProps) {
 
     return (
-        <Card className="card" sx={{ maxWidth: 345 }}>
-            <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="500"
-                    src={photo.downloadUrl}
-                    alt="error loading"/>
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {photo.filename}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
+        <div className="image-card">
+            <img className="image" src={photo.downloadUrl}/>
+            <div className="details">
+                <p>{photo.filename}</p>
+                <button className="btn btn-delete" onClick={() => handleDelete(photo.id)}>
+                    <i className="fa fa-trash"></i>
+                </button>
+            </div>
+        </div>
     );
 }
