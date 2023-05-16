@@ -1,4 +1,4 @@
-import { addPhoto, getPhotosByUsername, addUserRoleToPhoto, getPhotoById } from "../services/photo-service.js";
+import { addPhoto, getPhotosByUsername, addUserRoleToPhoto, getPhotoById, deletePhoto } from "../services/photo-service.js";
 import multer from 'multer';
 import path from "path";
 
@@ -47,3 +47,13 @@ export async function getPhoto(req, res) {
         res.status(error.code).json({ message: error.message });
     }
 };
+
+export async function deletePhotoById(req, res) {
+    try {
+        const result = await deletePhoto(req.query['id']);
+        res.status(result.code).json({ message: result.message });
+    } catch(error) {
+        console.log(error);
+        res.status(error.code).json({ message: error.message });
+    }
+}

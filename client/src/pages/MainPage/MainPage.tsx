@@ -40,7 +40,7 @@ export function MainPage() {
     };
 
     function handleDeletePhoto(id: number) {
-        console.log(id);
+        console.log("done");
     }
 
     function renderPhotos(): any {

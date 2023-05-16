@@ -1,4 +1,4 @@
-import { PoolConnection } from 'mariadb';
+import { Connection, PoolConnection } from 'mariadb';
 import { dbPool } from '../index.js';
 import { Attribute, AttributeDAO, Photo, PhotoUser } from '../models/models.js';
 import { getImageFromCloud } from './google-cloud-dao.js';
@@ -9,6 +9,10 @@ const attributeInsertQuery = `INSERT INTO image_data.attribute (name, score, pho
 const getPhotosByUsernameQuery = `SELECT id, bucket_url, filename, unique_name, upload_time FROM image_data.photo AS t1 INNER JOIN image_data.photo_user AS t2 ON t1.id = t2.photo_id WHERE t2.username = ?`;
 const getPhotoQuery =  `SELECT id, bucket_url, filename, upload_time FROM image_data.photo where id = ?`;
 const getAttributesByIdQuery = `SELECT id, name, score FROM image_data.attribute where photo_id = ?`;
+const deletePhotoQuery = `DELETE FROM image_data.photo WHERE id = ?`;
+const deletePhotoUserQuery = `DELETE FROM image_data.photo_user WHERE photo_id = ?`;
+const deletePhotoAttributesQuery = `DELETE FROM image_data.attribute WHERE photo_id = ?`;
+const getUniqueNameQuery = `SELECT unique_name FROM image_data.photo WHERE id = ?`;
 
 
 export async function uploadPhoto(photo: Photo, connection: PoolConnection): Promise<Photo> {
@@ -69,3 +73,28 @@ export async function getAttributesById(id: number): Promise<Array<AttributeDAO>
     connection.end();
     return result;
 };
+
+export async function deletePhotoUser(id: number, connection: Connection) {
+    await connection.query(deletePhotoUserQuery, id).then(result => {
+        console.log(result);
+    });
+};
+
+export async function deletePhotoAttributes(id: number, connection: Connection) {
+    await connection.query(deletePhotoAttributesQuery, id).then(result => {
+        console.log(result);
+    });
+};
+
+export async function deletePhotoDAO(id: number, connection: Connection) {
+    await connection.query(deletePhotoQuery, id).then(result => {
+        console.log(result);
+    });
+};
+
+export async function getUniqueName(id: number, connection: Connection): Promise<string> {
+    const uniqueName: string = await connection.query(getUniqueNameQuery, id).then(result => {
+        return result[0].unique_name;
+    });
+    return uniqueName;
+}
