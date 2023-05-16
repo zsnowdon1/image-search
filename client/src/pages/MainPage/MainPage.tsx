@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PhotoCard } from '../../components/PhotoCard/PhotoCard';
 import { Photo } from '../../models/models';
 import { deletePhoto, getPhotosByUser, uploadPhoto } from '../../services/PhotoService';
-
-interface photoProps {
-    photo: Photo,
-    handleDelete: any
-}
+import './MainPage.css';
 
 export function MainPage() {
 
@@ -51,9 +47,9 @@ export function MainPage() {
     function renderPhotos(): any {
         return (
             <div className="photos">
-                {userPhotos.map(photo => {
-                    return <PhotoCard photo={photo} handleDelete={handleDeletePhoto}/>;
-                })}
+                {userPhotos.map(photo => (
+                    <PhotoCard photo={photo} handleDelete={handleDeletePhoto}/>
+                ))}
             </div>
         )
     }
