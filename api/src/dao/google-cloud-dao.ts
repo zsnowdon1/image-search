@@ -61,8 +61,6 @@ export async function getImageProperties(file: Photo): Promise<Attribute[]> {
     }));
 };
 
-export async function deleteImageFromCloud(uniqueName: string): Promise<string> {
-    const result = await photoBucket.file("fail").delete();
-    console.log(result);
-    return null;
+export async function deleteImageFromCloud(uniqueName: string) {
+    const result = await photoBucket.file(uniqueName).delete();
 }

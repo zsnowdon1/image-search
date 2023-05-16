@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PhotoCard } from '../../components/PhotoCard/PhotoCard';
 import { Photo } from '../../models/models';
-import { getPhotosByUser, uploadPhoto } from '../../services/PhotoService';
+import { deletePhoto, getPhotosByUser, uploadPhoto } from '../../services/PhotoService';
 
 interface photoProps {
     photo: Photo,
@@ -39,8 +39,13 @@ export function MainPage() {
         setUserPhotos(userPhotos => [...userPhotos, photo.photo]);
     };
 
-    function handleDeletePhoto(id: number) {
-        console.log("done");
+    async function handleDeletePhoto(id: number) {
+        const result = await deletePhoto(id);
+        if(result.status == 202) {
+            setUserPhotos(userPhotos => 
+                userPhotos.filter(photo => photo.id != id)
+            );
+        }
     }
 
     function renderPhotos(): any {

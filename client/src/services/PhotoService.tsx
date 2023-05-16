@@ -18,3 +18,8 @@ export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
 export async function downloadPhoto(photo: Photo) {
     
 }
+
+export async function deletePhoto(id: number) {
+    const result = await api.deletePhoto(id);
+    return result;
+}

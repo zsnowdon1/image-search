@@ -75,21 +75,15 @@ export async function getAttributesById(id: number): Promise<Array<AttributeDAO>
 };
 
 export async function deletePhotoUser(id: number, connection: Connection) {
-    await connection.query(deletePhotoUserQuery, id).then(result => {
-        console.log(result);
-    });
+    await connection.query(deletePhotoUserQuery, id);
 };
 
 export async function deletePhotoAttributes(id: number, connection: Connection) {
-    await connection.query(deletePhotoAttributesQuery, id).then(result => {
-        console.log(result);
-    });
+    await connection.query(deletePhotoAttributesQuery, id);
 };
 
 export async function deletePhotoDAO(id: number, connection: Connection) {
-    await connection.query(deletePhotoQuery, id).then(result => {
-        console.log(result);
-    });
+    await connection.query(deletePhotoQuery, id);
 };
 
 export async function getUniqueName(id: number, connection: Connection): Promise<string> {
