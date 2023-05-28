@@ -1,4 +1,4 @@
-FROM node:18.9
+FROM node:18.9 as prod
 
 WORKDIR /src
 COPY package.json .

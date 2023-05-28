@@ -9,7 +9,17 @@ export async function uploadPhoto(photo: any) {
     return data;
 }
 
-export async function getPhotosByUser(username: String): Promise<Array<Photo>> {
-    const { data } = await api.getPhotosByUsername(username);
-    return data.photos;
+export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
+    const result = await api.getPhotosByUsername(username);
+    console.log(result.data);
+    return result.data.photos;
+}
+
+export async function downloadPhoto(photo: Photo) {
+    
+}
+
+export async function deletePhoto(id: number) {
+    const result = await api.deletePhoto(id);
+    return result;
 }

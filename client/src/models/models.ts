@@ -1,6 +1,8 @@
 export type Photo = {
     id: number;
-    bucketUrl: String;
-    filename: String;
+    bucketUrl: string;
+    filename: string;
+    uniqueName: string;
     uploadTime: Date;
+    downloadUrl: string;
 };

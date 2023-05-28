@@ -1,15 +1,18 @@
-import { addImageToCloud, getImageProperties } from "../dao/google-cloud-dao.js";
-import { uploadPhoto, addPhotoUser, addAttributes, getPhotosByUser, getPhoto, getAttributesById } from "../dao/photo-dao.js";
+import { addImageToCloud, deleteImageFromCloud, getImageFromCloud, getImageProperties } from "../dao/google-cloud-dao.js";
+import { uploadPhoto, addPhotoUser, addAttributes, getPhotosByUser, getPhoto, getAttributesById, deletePhotoUser, deletePhotoAttributes, deletePhotoDAO, getUniqueName } from "../dao/photo-dao.js";
 import { Attribute, AttributeDAO, Photo, PhotoDAO, PhotoUser } from "../models/models.js";
 import { dbPool } from '../index.js';
+import { randomUUID } from "crypto";
 
-export async function addPhoto(file: any, username: String) {
+export async function addPhoto(file: any, username: string) {
+    const uniqueName = file.originalname + "-" + randomUUID();
+    file.uniqueName = uniqueName;
     const photoUrl = await addImageToCloud(file);
-
 
     let photo: Photo = {
         bucketUrl: photoUrl,
         filename: file.originalname,
+        uniqueName: uniqueName,
         uploadTime: new Date()
     };
 
@@ -18,28 +21,39 @@ export async function addPhoto(file: any, username: String) {
     try {
 
         photo = await uploadPhoto(photo, connection);
-
-        let attributes: Array<Attribute> = await getImageProperties(photo);
-
         const photoUser: PhotoUser = {
             username: username,
             photoId: photo.id,
             isOwner: true
         };
+
+        let attributes: Array<Attribute> = await getImageProperties(photo);
         await addPhotoUser(photoUser, connection);
 
         await addAttributes(attributes, connection);
+
         await connection.commit();
+        connection.end();
         return { code: 201, photo: photo, attributes: attributes };
     } catch (error) {
         connection.rollback();
+        connection.commit();
+        connection.end();
         return { code: 400, message: "Error in database transactions" };
     }
 };
 
-export async function getPhotosByUsername(username: String) {
+export async function getPhotosByUsername(username: string) {
     try {
-        const photos: Array<Photo> = await getPhotosByUser(username);
+        var photos: Array<Photo> = await getPhotosByUser(username);
+        photos = await Promise.all(photos.map(async (photo): Promise<Photo> => ({
+            id: photo.id,
+            filename: photo.filename,
+            uniqueName: photo.uniqueName,
+            bucketUrl: photo.bucketUrl,
+            uploadTime: photo.uploadTime,
+            downloadUrl: await getImageFromCloud(photo.uniqueName)
+        })));
         return { code: 200, photos: photos };
     } catch (error) {
         return { code: 400, message: "Could not receive photos" };
@@ -57,12 +71,37 @@ export async function getPhotoById(id: number) {
 };
 
 export async function addUserRoleToPhoto(photoUser: PhotoUser) {
+    let connection = await dbPool.getConnection();
     try {
-        let connection = await dbPool.getConnection();
+        await connection.beginTransaction();
         await addPhotoUser(photoUser, connection);
         connection.commit();
+        connection.end();
         return { code: 200, user: photoUser };
     } catch (error) {
+        connection.rollback();
+        connection.commit();
+        connection.end();
         return { code: 400, message: "Could not add user to photo" };
     }
 };
+
+export async function deletePhoto(id: number) {
+    let connection = await dbPool.getConnection();
+    try {
+        await connection.beginTransaction();
+        const uniqueName = await getUniqueName(id, connection);
+        await deletePhotoUser(id, connection);
+        await deletePhotoAttributes(id, connection);
+        await deletePhotoDAO(id, connection);
+        await deleteImageFromCloud(uniqueName);
+    } catch (error) {
+        connection.rollback();
+        connection.commit();
+        connection.end();
+        return { code: 404, message: "Photo could not be deleted" };
+    }
+    connection.commit();
+    connection.end();
+    return { code: 202, message: "Photo successfully deleted" };
+}

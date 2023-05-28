@@ -15,11 +15,13 @@ services:
   api:
     depends_on:
       - mariadb
-    build: ./api
+    build: 
+      context: ./api
     restart: unless-stopped
     env_file: dev.env
     ports:
-      - "8080:8080"
+      - 8080:8080
+      - 9229:9229
 
   react:
     build:
@@ -28,7 +30,7 @@ services:
       - api
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
       - ./client/src:/app/src
 

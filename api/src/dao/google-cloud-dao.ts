@@ -1,4 +1,4 @@
-import { Storage } from '@google-cloud/storage';
+import { GetSignedUrlResponse, Storage } from '@google-cloud/storage';
 import vision from '@google-cloud/vision';
 import path from 'path';
 import { format } from 'util';
@@ -15,10 +15,9 @@ const googleCloud = new Storage({
 
 const photoBucket = googleCloud.bucket('zsnowdon_app_bucket');
 
-export const addImageToCloud = (file) => new Promise<String | String>((resolve, reject) => {
-    const { originalname, buffer } = file;
-  
-    const blob = photoBucket.file(originalname.replace(/ /g, "_"));
+export const addImageToCloud = (file) => new Promise<string | string>((resolve, reject) => {
+    const { uniqueName, buffer } = file;
+    const blob = photoBucket.file(uniqueName.replace(/ /g, "_"));
     const blobStream = blob.createWriteStream({
         resumable: false
     });
@@ -28,7 +27,7 @@ export const addImageToCloud = (file) => new Promise<String | String>((resolve, 
     });
 
     blobStream.on('finish', async () => {
-        const publicUrl: String = format(
+        const publicUrl: string = format(
             `https://storage.googleapis.com/${photoBucket.name}/${blob.name}`
         );
         resolve(publicUrl);
@@ -39,8 +38,16 @@ export const addImageToCloud = (file) => new Promise<String | String>((resolve, 
     .end(buffer);
 });
 
+export async function getImageFromCloud(uniqueName: string): Promise<string> {
+    const result: GetSignedUrlResponse = await photoBucket.file(uniqueName).getSignedUrl({
+        action: 'read',
+        expires: new Date(new Date().getTime() + 86400000)
+    });
+    return result[0];
+};
+
 export async function getImageProperties(file: Photo): Promise<Attribute[]> {
-    const blob = photoBucket.file(file.filename.replace(/ /g, "_"));
+    const blob = photoBucket.file(file.uniqueName.replace(/ /g, "_"));
     const client = new vision.ImageAnnotatorClient({
         keyFilename: path.join(__dirname, '../../secrets/rising-apricot-380619-075a8b342646.json')
     });
@@ -52,4 +59,8 @@ export async function getImageProperties(file: Photo): Promise<Attribute[]> {
         score: attribute.score,
         photoId: file.id
     }));
+};
+
+export async function deleteImageFromCloud(uniqueName: string) {
+    const result = await photoBucket.file(uniqueName).delete();
 }

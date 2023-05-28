@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { signUp } from '../../services/AuthService';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './SignUpCard.css';
 
 export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}) {
@@ -24,6 +24,7 @@ export function SignUpCard(props: {setSignIn: Dispatch<SetStateAction<boolean>>}
         const response = await signUp(signUpData).catch(error => {
             console.log(error);
         });
+        console.log(response);
         if(response) {
             navigate('/photos');
         }
