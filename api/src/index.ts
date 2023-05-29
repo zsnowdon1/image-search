@@ -3,8 +3,9 @@ import mariadb from 'mariadb';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import photoRoutes from './routes/photo-routes.js'
-import authRoutes from './routes/auth-routes.js'
+import photoRoutes from './routes/photo-routes.js';
+import authRoutes from './routes/auth-routes.js';
+import attributeRoutes from './routes/attribute-routes.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors());
 
 app.use('/photo', photoRoutes);
 app.use('/auth', authRoutes);
+app.use('/attribute', attributeRoutes);
 
 const PORT = process.env.PORT || 8080;
 

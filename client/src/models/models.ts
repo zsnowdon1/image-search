@@ -5,4 +5,9 @@ export type Photo = {
     uniqueName: string;
     uploadTime: Date;
     downloadUrl: string;
-};
+}
+
+export type Attribute = {
+    id: number,
+    name: string
+}

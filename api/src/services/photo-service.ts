@@ -28,6 +28,7 @@ export async function addPhoto(file: any, username: string) {
         };
 
         let attributes: Array<Attribute> = await getImageProperties(photo);
+
         await addPhotoUser(photoUser, connection);
 
         await addAttributes(attributes, connection);

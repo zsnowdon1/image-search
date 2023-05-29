@@ -1,5 +1,5 @@
 export type Photo = {
-    id?: number;
+    id?: number,
     bucketUrl: string;
     filename: string;
     uniqueName: string;
@@ -15,7 +15,7 @@ export type PhotoDAO = {
 export type AttributeDAO = {
     id: number;
     name: string;
-    score: number;
+    score?: number;
 };
 
 export type PhotoUser = {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PhotoCard } from '../../components/PhotoCard/PhotoCard';
+import { SearchBar } from '../../components/Search/SearchBar';
 import { Photo } from '../../models/models';
 import { deletePhoto, getPhotosByUser, uploadPhoto } from '../../services/PhotoService';
 import './MainPage.css';
@@ -56,6 +57,7 @@ export function MainPage() {
 
     return (
         <div>
+            <SearchBar/>
             <div>
                 <input type="file" accept="image/*" onChange={handleAddFile}/>
                 <button onClick={handleSubmitPhoto}>Add Photo</button>

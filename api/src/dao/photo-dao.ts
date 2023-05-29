@@ -54,7 +54,7 @@ export async function getPhotosByUser(username: string): Promise<Array<Photo>> {
     let connection = await dbPool.getConnection();
     const result: Array<Photo> = await connection.query(getPhotosByUsernameQuery, [username])
         .then(result => result.map((photo): Photo => {
-            return {id: photo.id, bucketUrl: photo.bucket_url, filename: photo.filename, uniqueName: photo.unique_name, uploadTime: photo.upload_time};
+            return {bucketUrl: photo.bucket_url, filename: photo.filename, uniqueName: photo.unique_name, uploadTime: photo.upload_time};
         }))
         .catch(error => console.log(error));
     connection.end();

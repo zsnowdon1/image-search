@@ -9,7 +9,8 @@ const storage = multer.memoryStorage({
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname))
     }
-});
+})
+
 export const upload = multer({storage: storage});
 
 export async function uploadPhoto(req, res) {
@@ -19,7 +20,7 @@ export async function uploadPhoto(req, res) {
     } catch (error) {
         res.status(error.code).json({ message: error.message });
     }
-};
+}
 
 export async function getPhotosByUser(req, res) {
     try {
@@ -37,7 +38,7 @@ export async function addUserToPhoto(req, res) {
     } catch (error) {
         res.status(error.code).json({ message: error.message });
     }
-};
+}
 
 export async function getPhoto(req, res) {
     try {
@@ -46,7 +47,7 @@ export async function getPhoto(req, res) {
     } catch(error) {
         res.status(error.code).json({ message: error.message });
     }
-};
+}
 
 export async function deletePhotoById(req, res) {
     try {
